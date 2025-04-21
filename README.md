@@ -115,3 +115,13 @@ osTicket is supported by several magical open source projects including:
   * [php-gettext](https://launchpad.net/php-gettext/)
   * [phpseclib](https://phpseclib.sourceforge.net/)
   * [Spyc](https://github.com/mustangostang/spyc)
+
+
+## Modification Done
+In [open.php], javascript is added to render 
+Styles are added in [theme.css]
+
+### Block Request by HR Department 
+[scp/block.php] & [include/staff/block.inc.php] file is custom created 
+
+Styling is added on [theme.css] file !!
