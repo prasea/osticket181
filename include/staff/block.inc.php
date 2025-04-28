@@ -66,7 +66,7 @@ if (is_dir($uploadDir)) {
       <?php foreach ($uploadedFiles as $file): ?>
         <tr>
           <td><?= htmlspecialchars($file) ?></td>
-          <td><a href="download.php?file=<?= rawurlencode($file) ?>">Download</a></td>
+          <td><a class="no-pjax" href="download.php?file=<?= rawurlencode($file) ?>">Download</a></td>
         </tr>
       <?php endforeach; ?>
     </tbody>

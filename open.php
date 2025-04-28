@@ -112,159 +112,160 @@ require(CLIENTINC_DIR . 'footer.inc.php');
                     $('#dynamic-form').empty().append(json.html);
                     $(document.head).append(json.media);
 
+                    setTimeout(() => {
 
 
-
-                    /*                    
-                    <tr style="">
-                        <td colspan="2" style="padding-top:10px;">
-                            <label for="e73239e8148745"><span class="">
-                                    Gold Loan </span> <br>
-                                <label class="checkbox">
-                                    <input id="_e73239e8148745" type="checkbox" name="_field-checkboxes[]" value="48">
+                        /*                    
+                        <tr style="">
+                            <td colspan="2" style="padding-top:10px;">
+                                <label for="e73239e8148745"><span class="">
+                                        Gold Loan </span> <br>
+                                    <label class="checkbox">
+                                        <input id="_e73239e8148745" type="checkbox" name="_field-checkboxes[]" value="48">
+                                    </label>
                                 </label>
-                            </label>
-                        </td>
-                    </tr>
-                    
-                    <tr style="">
-                        <td colspan="2" style="padding-top: 10px;">
-                            <label class="checkbox-label" for="_e73239e8148745">
-                                <input type="checkbox" id="_e73239e8148745" name="_field-checkboxes[]" value="48"> Gold Loan
-                            </label>
-                        </td>
-                    </tr>
-                    */
+                            </td>
+                        </tr>
+                        
+                        <tr style="">
+                            <td colspan="2" style="padding-top: 10px;">
+                                <label class="checkbox-label" for="_e73239e8148745">
+                                    <input type="checkbox" id="_e73239e8148745" name="_field-checkboxes[]" value="48"> Gold Loan
+                                </label>
+                            </td>
+                        </tr>
+                        */
 
-                    // Fix invalid nested labels styling and align checkbox with text
-                    document.querySelectorAll('#dynamic-form tr').forEach(row => {
-                        const outerLabel = row.querySelector('label[for]');
-                        const innerLabel = row.querySelector('label.checkbox');
-                        const checkbox = innerLabel?.querySelector('input');
+                        // Fix invalid nested labels styling and align checkbox with text
+                        document.querySelectorAll('#dynamic-form tr').forEach(row => {
+                            const outerLabel = row.querySelector('label[for]');
+                            const innerLabel = row.querySelector('label.checkbox');
+                            const checkbox = innerLabel?.querySelector('input');
 
-                        // Adding custom class to date input picker
-                        const input = row.querySelector('input[type="text"].dp');
-                        let count = 0;
-                        if (input) {
-                            input.classList.add(`custom-date-${count++}`);
+                            // Adding custom class to date input picker
+                            const input = row.querySelector('input[type="text"].dp');
+                            let count = 0;
+                            if (input) {
+                                input.classList.add(`custom-date-${count++}`);
+                            }
+
+                            if (outerLabel && checkbox) {
+                                const text = outerLabel.querySelector('span')?.innerText || 'Checkbox';
+                                const newLabel = document.createElement('label');
+                                newLabel.className = 'checkbox-label';
+                                newLabel.setAttribute('for', checkbox.id);
+                                newLabel.innerHTML = `<input type="checkbox" id="${checkbox.id}" name="${checkbox.name}" value="${checkbox.value}"> ${text}`;
+
+                                // Replace the old HTML
+                                row.innerHTML = '';
+                                const td = document.createElement('td');
+                                td.colSpan = 2;
+                                td.style.paddingTop = '10px';
+                                td.appendChild(newLabel);
+                                row.appendChild(td);
+                            }
+                        });
+
+                        // Set today's date as default in yyyy-mm-dd format
+                        const today = new Date();
+                        const yyyy = today.getFullYear();
+                        const mm = String(today.getMonth() + 1)
+                        const dd = String(today.getDate());
+                        const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+                        const dateField = document.querySelector('input.custom-date-0');
+                        if (dateField) {
+                            dateField.value = formattedDate;
                         }
 
-                        if (outerLabel && checkbox) {
-                            const text = outerLabel.querySelector('span')?.innerText || 'Checkbox';
-                            const newLabel = document.createElement('label');
-                            newLabel.className = 'checkbox-label';
-                            newLabel.setAttribute('for', checkbox.id);
-                            newLabel.innerHTML = `<input type="checkbox" id="${checkbox.id}" name="${checkbox.name}" value="${checkbox.value}"> ${text}`;
+                        // After dynamic form content is loaded, handle Privilege Type selection
+                        if (selectedHelpTopicValue == 12) {
+                            const selectedPrivilegeType = document.querySelector('select[data-placeholder="Choose Request Privilege Type"]');
+                            const allDynamicFormRows = document.querySelectorAll('#dynamic-form tr');
+                            const branchManager = allDynamicFormRows[7],
+                                creditChecker = allDynamicFormRows[8],
+                                operationChecker = allDynamicFormRows[9],
+                                creditMaker = allDynamicFormRows[10],
+                                operationMakerL1 = allDynamicFormRows[11],
+                                operationMakerL2 = allDynamicFormRows[12],
+                                operationMakerL3 = allDynamicFormRows[13],
+                                goldLoanMaker = allDynamicFormRows[14];
+                            // Initially hide all the privileges
+                            branchManager.style.display = 'none';
+                            creditChecker.style.display = 'none';
+                            operationChecker.style.display = 'none';
+                            creditMaker.style.display = 'none';
+                            operationMakerL1.style.display = 'none';
+                            operationMakerL2.style.display = 'none';
+                            operationMakerL3.style.display = 'none';
+                            goldLoanMaker.style.display = 'none';
 
-                            // Replace the old HTML
-                            row.innerHTML = '';
-                            const td = document.createElement('td');
-                            td.colSpan = 2;
-                            td.style.paddingTop = '10px';
-                            td.appendChild(newLabel);
-                            row.appendChild(td);
+                            // Listen for changes on the Privilege Type Select
+                            selectedPrivilegeType.addEventListener("change", function() {
+                                const selectedPrivilegeTypeValue = this.value.split(':')[0]; // Extract the part before the colon (checker or maker)
+                                console.log('Selected Privilege Type:', selectedPrivilegeTypeValue);
+
+                                // Handle "Checker" selection
+                                if (selectedPrivilegeTypeValue === 'checker') {
+                                    branchManager.style.display = '';
+                                    creditChecker.style.display = '';
+                                    operationChecker.style.display = '';
+
+                                    // Hide Maker-related rows
+                                    creditMaker.style.display = 'none';
+                                    operationMakerL1.style.display = 'none';
+                                    operationMakerL2.style.display = 'none';
+                                    operationMakerL3.style.display = 'none';
+                                    goldLoanMaker.style.display = 'none'
+                                }
+
+                                // Handle "Maker" selection
+                                if (selectedPrivilegeTypeValue === 'maker') {
+                                    creditMaker.style.display = '';
+                                    operationMakerL1.style.display = '';
+                                    operationMakerL2.style.display = '';
+                                    operationMakerL3.style.display = '';
+                                    goldLoanMaker.style.display = '';
+
+                                    // Hide Checker-related rows
+                                    branchManager.style.display = 'none';
+                                    creditChecker.style.display = 'none';
+                                    operationChecker.style.display = 'none';
+                                }
+                            });
                         }
-                    });
 
-                    // Set today's date as default in yyyy-mm-dd format
-                    const today = new Date();
-                    const yyyy = today.getFullYear();
-                    const mm = String(today.getMonth() + 1)
-                    const dd = String(today.getDate());
-                    const formattedDate = `${yyyy}-${mm}-${dd}`;
-
-                    const dateField = document.querySelector('input.custom-date-0');
-                    if (dateField) {
-                        dateField.value = formattedDate;
-                    }
-
-                    // After dynamic form content is loaded, handle Privilege Type selection
-                    if (selectedHelpTopicValue == 12) {
-                        const selectedPrivilegeType = document.querySelector('select[data-placeholder="Choose Request Privilege Type"]');
-                        const allDynamicFormRows = document.querySelectorAll('#dynamic-form tr');
-                        const branchManager = allDynamicFormRows[7],
-                            creditChecker = allDynamicFormRows[8],
-                            operationChecker = allDynamicFormRows[9],
-                            creditMaker = allDynamicFormRows[10],
-                            operationMakerL1 = allDynamicFormRows[11],
-                            operationMakerL2 = allDynamicFormRows[12],
-                            operationMakerL3 = allDynamicFormRows[13],
-                            goldLoanMaker = allDynamicFormRows[14];
-                        // Initially hide all the privileges
-                        branchManager.style.display = 'none';
-                        creditChecker.style.display = 'none';
-                        operationChecker.style.display = 'none';
-                        creditMaker.style.display = 'none';
-                        operationMakerL1.style.display = 'none';
-                        operationMakerL2.style.display = 'none';
-                        operationMakerL3.style.display = 'none';
-                        goldLoanMaker.style.display = 'none';
-
-                        // Listen for changes on the Privilege Type Select
-                        selectedPrivilegeType.addEventListener("change", function() {
-                            const selectedPrivilegeTypeValue = this.value.split(':')[0]; // Extract the part before the colon (checker or maker)
-                            console.log('Selected Privilege Type:', selectedPrivilegeTypeValue);
-
-                            // Handle "Checker" selection
-                            if (selectedPrivilegeTypeValue === 'checker') {
-                                branchManager.style.display = '';
-                                creditChecker.style.display = '';
-                                operationChecker.style.display = '';
-
-                                // Hide Maker-related rows
-                                creditMaker.style.display = 'none';
-                                operationMakerL1.style.display = 'none';
-                                operationMakerL2.style.display = 'none';
-                                operationMakerL3.style.display = 'none';
-                                goldLoanMaker.style.display = 'none'
-                            }
-
-                            // Handle "Maker" selection
-                            if (selectedPrivilegeTypeValue === 'maker') {
-                                creditMaker.style.display = '';
-                                operationMakerL1.style.display = '';
-                                operationMakerL2.style.display = '';
-                                operationMakerL3.style.display = '';
-                                goldLoanMaker.style.display = '';
-
-                                // Hide Checker-related rows
-                                branchManager.style.display = 'none';
-                                creditChecker.style.display = 'none';
-                                operationChecker.style.display = 'none';
-                            }
+                        // Uncheck if multiple checkboxes are checked
+                        document.querySelectorAll('#dynamic-form input[type="checkbox"]').forEach((checkbox) => {
+                            checkbox.addEventListener('change', function(e) {
+                                if (this.checked) {
+                                    document.querySelectorAll('#dynamic-form input[type="checkbox"]').forEach((box) => {
+                                        if (box !== this) box.checked = false;
+                                    });
+                                }
+                            });
                         });
-                    }
 
-                    // Uncheck if multiple checkboxes are checked
-                    document.querySelectorAll('#dynamic-form input[type="checkbox"]').forEach((checkbox) => {
-                        checkbox.addEventListener('change', function(e) {
-                            if (this.checked) {
-                                document.querySelectorAll('#dynamic-form input[type="checkbox"]').forEach((box) => {
-                                    if (box !== this) box.checked = false;
-                                });
-                            }
+                        // Adding Select 2 on Branch Name choices
+                        $('#dynamic-form select[data-placeholder="Select"]').select2({
+                            placeholder: 'Select a branch',
+                            allowClear: true
                         });
-                    });
-
-                    // Adding Select 2 on Branch Name choices
-                    $('#dynamic-form select[data-placeholder="Select"]').select2({
-                        placeholder: 'Select a branch',
-                        allowClear: true
-                    });
 
 
-                    // To dynamically wrap the datepicker input and its associated button inside a .datepicker-wrapper div
-                    $(function() {
-                        $('#dynamic-form input.hasDatepicker').each(function() {
-                            const $input = $(this);
-                            const $button = $input.next('.ui-datepicker-trigger');
-                            const $timezone = $button.next('.faded');
+                        // To dynamically wrap the datepicker input and its associated button inside a .datepicker-wrapper div
+                        $(function() {
+                            $('#dynamic-form input.hasDatepicker').each(function() {
+                                const $input = $(this);
+                                const $button = $input.next('.ui-datepicker-trigger');
+                                const $timezone = $button.next('.faded');
 
-                            // Wrap input + button (and optionally timezone info)
-                            const $wrapper = $('<div class="datepicker-wrapper"></div>');
-                            $input.add($button).add($timezone).wrapAll($wrapper);
+                                // Wrap input + button (and optionally timezone info)
+                                const $wrapper = $('<div class="datepicker-wrapper"></div>');
+                                $input.add($button).add($timezone).wrapAll($wrapper);
+                            });
                         });
-                    });
+                    }, 0)
 
                 }
             });
