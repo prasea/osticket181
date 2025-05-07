@@ -1,0 +1,137 @@
+/* 
+Primary #a93a7c
+Seconday #663366
+*/
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+:root {
+  --primary-color: #a93a7c;
+  --secondary-color: #663366;
+}
+
+#form-area {
+  background-color: #f9f9f9;
+  border: 2px solid var(--secondary-color);
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  color: var(--secondary-color);
+}
+
+#form-area h4 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 3px var(--primary-color);
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button-group button {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-group button:hover {
+  background-color: #902f69;
+}
+
+#font-size {
+  width: 70px;
+  margin-left: 10px;
+}
+
+#cheque-container {
+  position: relative;
+  width: 1207px;
+  height: 549px;
+  background-image: url("scb-cheque-template.jpg");
+  /* Replace with your image path */
+  background-size: cover;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.draggable {
+  position: absolute;
+  padding: 2px 4px;
+  cursor: move;
+  font-weight: bold;
+  color: black;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px dashed #444;
+}
+
+#form-area {
+  margin-bottom: 20px;
+}
+
+.font-control {
+  width: 50px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #cheque-container,
+  #cheque-container * {
+    visibility: visible;
+  }
+
+  #cheque-container {
+    background: none !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+  }
+
+  .draggable {
+    background: none !important;
+    border: none !important;
+  }
+
+  #form-area {
+    display: none;
+  }
+}

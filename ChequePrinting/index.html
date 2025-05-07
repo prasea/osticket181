@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cheque Printer (Dynamic & Formatted)</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <div id="form-area">
+    <h4>Cheque Printer – The Prime Bank</h4>
+
+    <div class="form-group">
+      <label for="name-input">Name</label>
+      <input type="text" id="name-input">
+    </div>
+
+    <div class="form-group">
+      <label for="amount-num-input">Amount (Numbers)</label>
+      <input type="text" id="amount-num-input">
+    </div>
+
+    <div class="form-group">
+      <label for="amount-words-input">Amount (Words)</label>
+      <input type="text" id="amount-words-input">
+    </div>
+
+    <div class="form-group">
+      <label for="date-input">Date</label>
+      <input type="date" id="date-input">
+    </div>
+
+    <div class="form-group">
+      <label for="font-size">Font Size (px)</label>
+      <!-- Name: <input type="number" class="font-control" onchange="changeFontSize('name', this.value)" value="16">px
+    Amount Num: <input type="number" class="font-control" onchange="changeFontSize('amount-num', this.value)"
+      value="16">px
+    Amount Words: <input type="number" class="font-control" onchange="changeFontSize('amount-words', this.value)"
+      value="16">px
+    Date: <input type="number" class="font-control" onchange="changeFontSize('date', this.value)" value="16">px -->
+      <input type="number" id="font-size" value="24" onchange="setGlobalFontSize(this.value)">
+    </div>
+
+    <div class="button-group">
+      <button onclick="updateText()">Update Preview</button>
+      <button onclick="window.print()">Print</button>
+    </div>
+  </div>
+
+  <div id="cheque-container">
+    <div id="name" class="draggable" style="top: 150px; left: 150px; font-size: 24px;">Name</div>
+    <div id="amount-num" class="draggable" style="top: 230px; left: 1000px; font-size: 24px;">Amount</div>
+    <div id="amount-words" class="draggable" style="top: 200px; left: 150px; font-size: 24px;">Amount Words</div>
+    <div id="date" class="draggable" style="top: 80px; left: 1000px; font-size: 24px; letter-spacing: 7px;">Date</div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>
